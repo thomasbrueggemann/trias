@@ -40,8 +40,8 @@ Triangle::Triangle(Node _p0, Node _p1, Node _p2)
 	this->circle.y = int((double)((_p0.x - _p2.x) * m + (_p1.x - _p0.x) * u) * s);
 
 	// calculate the distance between the node points and the triangle circumcircle.
-	int dx := _p0.x - this->circle.x;
-	int dy := _p0.y - this->circle.y;
+	int dx = _p0.x - this->circle.x;
+	int dy = _p0.y - this->circle.y;
 
 	this->circle.radius = dx * dx + dy * dy;
 }

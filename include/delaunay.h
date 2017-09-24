@@ -16,7 +16,11 @@ class Delaunay
 	int height;
 	vector<Triangle> triangles;
 
+ public:
 	Delaunay(int _width, int _height);
+	void clear();
+	void insert(vector<Point> points);
+	vector<Triangle> getTriangles();
 };
 
 #endif //TRIAS_DELAUNAY_H
