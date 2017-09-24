@@ -1,2 +1,2 @@
-# trias
-Convert images to computer generated art using delaunay triangulation.
+# ▲rias
+A C++14 port of [triangle](https://github.com/esimov/triangle), just to understand some C++ concepts a little better.
