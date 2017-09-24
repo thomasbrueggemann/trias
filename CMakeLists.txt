@@ -19,7 +19,19 @@ include_directories(${ImageMagick_INCLUDE_DIRS})
 
 # add whirlwind
 add_executable(trias
-        src/main.cpp)
+        src/main.cpp
+        include/flags.h
+        src/delaunay.cpp
+        include/delaunay.h
+        src/triangle.cpp
+        include/triangle.h
+        include/point.h
+        src/node.cpp
+        include/node.h
+        src/circle.cpp
+        include/circle.h
+        src/edge.cpp
+        include/edge.h)
 
 # link everything to whirlwind
 target_link_libraries(trias ${ImageMagick_LIBRARIES})
