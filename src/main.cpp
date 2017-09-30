@@ -1,8 +1,8 @@
 #include <iostream>
 #include <Magick++.h>
-#include <cstdlib>
 
 #include "flags.h"
+#include "edges.h"
 #include "delaunay.h"
 
 using namespace std;
@@ -17,7 +17,6 @@ int main(int argc, char** argv)
     const auto source           = args.get<string>("in");
     const auto destination      = args.get<string>("out");
     const auto blurRadius       = args.get<double>("blur", 4.0);
-    const auto sobelThreshold   = args.get<int>("sobel", 10);
     const auto pointsThreshold  = args.get<int>("points", 20);
     const auto maxPoints        = args.get<int>("max", 2500);
     const auto wireframe        = args.get<int>("wireframe", 0);
@@ -33,14 +32,17 @@ int main(int argc, char** argv)
 
     // open source file
     Image src(*source);
-    unsigned int width = src.columns();
-    unsigned int height = src.rows();
+	unsigned int width = src.columns();
+	unsigned int height = src.rows();
+
+	// histogram equalization
+	src.equalize();
 
 	// blur image
 	src.blur(blurRadius);
 
 	// convert to greyscale
-	src.modulate(200.0, 0, 100.0);
+	src.modulate(100.0, 0, 100.0);
 
     // detect edges
 	const double kernel[3][3] = {
@@ -48,10 +50,28 @@ int main(int argc, char** argv)
 		{2.0, 0.0, -2.0},
 		{1.0, 0.0, -1.0}
 	};
+
     src.convolve(3, *kernel);
 
-    // init context to draw on
-    //Image ctx(Geometry(width, height), Color(1, 1, 1, 1));
+	// get edge points
+	Edges edges;
+	vector<Point> points = edges.getEdgePoints(src, pointsThreshold, maxPoints);
+
+	// perform delaunay triangulation
+	Delaunay delaunay(width, height);
+	delaunay.insert(points);
+	int numPoints = points.size();
+
+	vector<Triangle> triangles = delaunay.getTriangles();
+	int numTriangles = triangles.size();
+
+	// init context to draw on
+	Image ctx(Geometry(width, height), Color(1, 1, 1, 1));
+
+	for (auto triangle : triangles)
+	{
+
+	}
 
 	// write to destination
 	src.write(*destination);
