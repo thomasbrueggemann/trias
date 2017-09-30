@@ -5,6 +5,7 @@ Trias is a tool to create image arts using the [delaunay triangulation](https://
 ## Credits
 
 * https://github.com/sailormoon/flags
+* http://www.imagemagick.org/Magick++
 
 ## License
 
