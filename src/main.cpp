@@ -16,7 +16,7 @@ int main(int argc, char** argv)
     // parse command line flags
     const auto source           = args.get<string>("in");
     const auto destination      = args.get<string>("out");
-    const auto blurRadius       = args.get<int>("blur", 4);
+    const auto blurRadius       = args.get<double>("blur", 4.0);
     const auto sobelThreshold   = args.get<int>("sobel", 10);
     const auto pointsThreshold  = args.get<int>("points", 20);
     const auto maxPoints        = args.get<int>("max", 2500);
@@ -36,9 +36,25 @@ int main(int argc, char** argv)
     unsigned int width = src.columns();
     unsigned int height = src.rows();
 
+	// blur image
+	src.blur(blurRadius);
+
+	// convert to greyscale
+	src.modulate(200.0, 0, 100.0);
+
+    // detect edges
+	const double kernel[3][3] = {
+		{1.0, 0.0, -1.0},
+		{2.0, 0.0, -2.0},
+		{1.0, 0.0, -1.0}
+	};
+    src.convolve(3, *kernel);
+
     // init context to draw on
-    Image ctx(Geometry(width, height), Color(1, 1, 1, 1));
+    //Image ctx(Geometry(width, height), Color(1, 1, 1, 1));
 
+	// write to destination
+	src.write(*destination);
 
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }

@@ -31,7 +31,7 @@ add_executable(trias
         src/circle.cpp
         include/circle.h
         src/edge.cpp
-        include/edge.h src/sobel.cpp include/sobel.h)
+        include/edge.h)
 
 # link everything to whirlwind
 target_link_libraries(trias ${ImageMagick_LIBRARIES})
